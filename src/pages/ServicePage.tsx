@@ -517,32 +517,6 @@ export default function ServicePage() {
         />
 
         <div className="relative mx-auto max-w-3xl text-center">
-          {/* pulsing badge */}
-          <div
-            className="mb-6 inline-flex items-center gap-2 border-2 px-6 py-2"
-            style={{
-              borderColor: "rgba(255,140,0,0.3)",
-              backgroundColor: "rgba(255,140,0,0.07)",
-            }}
-          >
-            <span className="relative flex h-2 w-2">
-              <span
-                className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"
-                style={{ backgroundColor: O }}
-              />
-              <span
-                className="relative inline-flex h-2 w-2 rounded-full"
-                style={{ backgroundColor: O }}
-              />
-            </span>
-            <span
-              className="text-xs font-black uppercase tracking-[0.2em]"
-              style={{ color: O }}
-            >
-              Free Estimate — No Commitment
-            </span>
-          </div>
-
           <h2
             className="font-black leading-tight text-white"
             style={{
@@ -555,41 +529,10 @@ export default function ServicePage() {
             <span style={{ color: O }}>{service.label.toLowerCase()}</span> project?
           </h2>
 
-          <p
-            className="mx-auto mt-6 max-w-lg text-base leading-relaxed"
-            style={{ color: "rgba(255,255,255,0.48)" }}
-          >
-            We'll visit your site, measure the space, and deliver a detailed quote
-            within 24 hours — no obligation.
-          </p>
-
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <OutlineBtn onClick={() => navigate("/")}>
               Back to Home
             </OutlineBtn>
-          </div>
-
-          {/* trust row */}
-          <div
-            className="mt-12 flex flex-wrap items-center justify-center gap-6 text-xs font-semibold"
-            style={{ color: "rgba(255,255,255,0.35)" }}
-          >
-            {[
-              "Fast Response Time",
-              "Expert Consultation",
-              "No Obligation Quote",
-            ].map((item) => (
-              <div key={item} className="flex items-center gap-2">
-                <svg className="h-4 w-4" style={{ color: O }} fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                {item}
-              </div>
-            ))}
           </div>
         </div>
       </section>
