@@ -1,73 +1,83 @@
-# React + TypeScript + Vite
+# California Pro Construction & Welding — Landing Page
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Professional landing page for **California Pro Construction & Welding**, a licensed general contractor and ironwork specialist based in San Diego, CA.
 
-Currently, two official plugins are available:
+## Live Site
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Deployed via [Vercel](https://vercel.com) — connected to this repository's `main` branch.
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack
 
-## Expanding the ESLint configuration
+| Layer | Technology |
+|-------|-----------|
+| Framework | React 18 + TypeScript |
+| Build Tool | Vite |
+| Styling | Tailwind CSS + inline styles |
+| Routing | React Router v6 |
+| Fonts | Barlow Condensed (Google Fonts) |
+| Deployment | Vercel |
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Project Structure
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+src/
+├── assets/              # Images and video
+├── pages/
+│   ├── LandingPage.tsx  # Main page — section composition
+│   ├── ServicePage.tsx  # Individual service detail pages
+│   └── sections/
+│       ├── Navbar.tsx
+│       ├── Hero.tsx
+│       ├── Services.tsx
+│       ├── Projects.tsx
+│       ├── About.tsx
+│       ├── Testimonials.tsx  # Background video section
+│       ├── Faqs.tsx
+│       ├── Contact.tsx
+│       └── Footer.tsx
+├── utils/
+│   └── scrollToId.ts
+public/
+└── favicon.png          # Brand favicon
+index.html               # SEO meta tags + JSON-LD structured data
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Features
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- **Fully responsive** — mobile-first layout, CSS media queries for Hero and grid sections
+- **WhatsApp integration** — contact form pre-fills a WhatsApp message to +1 (619) 745-8718
+- **Service pages** — individual routes (`/services/:id`) for each service with photo and feature list
+- **Project gallery** — asymmetric photo grid with hover overlays and lightbox
+- **Background video** — full-bleed video section with dark overlay
+- **SEO ready** — title, description, Open Graph, Twitter Card, geo tags, and JSON-LD `GeneralContractor` schema in `index.html`
+- **Unified typography** — Barlow Condensed across all section headings, consistent body text at 15px
+
+---
+
+## Getting Started
+
+```bash
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+
+# Build for production
+npm run build
 ```
+
+---
+
+## Contact
+
+**California Pro Construction & Welding**  
+San Diego, CA  
+Phone: (619) 745-8718 | (619) 902-8005  
+Email: californiaproconstruction@gmail.com
