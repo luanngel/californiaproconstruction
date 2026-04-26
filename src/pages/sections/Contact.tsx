@@ -133,6 +133,32 @@ export default function Contact() {
       id="contacto"
       className="relative overflow-hidden bg-gradient-to-br from-zinc-900 via-black to-zinc-950 px-6 py-24"
     >
+      <style>{`
+        /* Prevent iOS Safari auto-zoom on input focus (requires font-size >= 16px) */
+        #contacto input,
+        #contacto select,
+        #contacto textarea {
+          font-size: 16px !important;
+          -webkit-text-fill-color: rgba(255,255,255,0.9);
+          color: white;
+        }
+        #contacto input::placeholder,
+        #contacto textarea::placeholder {
+          -webkit-text-fill-color: rgba(255,255,255,0.3);
+          color: rgba(255,255,255,0.3);
+        }
+        /* Fix select native appearance on iOS */
+        #contacto select {
+          -webkit-appearance: none;
+          background-color: rgba(255,255,255,0.08) !important;
+          color: white !important;
+          -webkit-text-fill-color: white !important;
+        }
+        #contacto select option {
+          background-color: #18181b;
+          color: white;
+        }
+      `}</style>
       {/* Background decorative elements */}
       <div className="absolute left-1/2 top-0 h-[500px] w-[1000px] -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,rgba(255,140,0,0.15),transparent_70%)]" />
       <div className="absolute bottom-0 right-0 h-[600px] w-[600px] bg-[radial-gradient(circle,rgba(255,140,0,0.08),transparent_70%)]" />
@@ -234,7 +260,7 @@ export default function Contact() {
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {/* Name & Company */}
-                  <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="grid gap-4 md:grid-cols-2">
                     <div>
                       <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-white/60">
                         Full Name *
@@ -264,7 +290,7 @@ export default function Contact() {
                   </div>
 
                   {/* Email & Phone */}
-                  <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="grid gap-4 md:grid-cols-2">
                     <div>
                       <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-white/60">
                         Email *
