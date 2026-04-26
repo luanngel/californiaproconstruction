@@ -1,6 +1,5 @@
 type Service = {
   id: string;
-  icon: string;
   title: string;
   desc: string;
   features: string[];
@@ -8,196 +7,232 @@ type Service = {
 
 const services: Service[] = [
   {
-    id: "services-commercial",
-    icon: "apartment",
-    title: "Commercial Construction",
+    id: "services-construction",
+    title: "General Construction",
     desc:
-      "Commercial construction services focused on durability, safety, and clean execution. We deliver reliable solutions for offices, retail spaces, and commercial facilities.",
+      "Full-scope construction from ground up — new builds, additions, and structural work for residential and commercial properties across San Diego.",
     features: [
-      "Commercial build-outs & renovations",
-      "Structural steel & metal framing",
-      "Code-compliant installations",
+      "New residential & commercial builds",
+      "Room additions & structural expansions",
+      "Foundations, framing & concrete work",
     ],
   },
   {
     id: "services-residential",
-    icon: "home",
-    title: "Residential Construction",
+    title: "Remodeling & Renovations",
     desc:
-      "Residential construction and metalwork designed to enhance safety, functionality, and visual appeal for your home.",
+      "Complete home and commercial remodels built with quality materials and attention to detail — on schedule and within budget.",
     features: [
-      "Home renovations & upgrades",
-      "Custom gates, rails & metal features",
-      "Structural repairs & reinforcements",
+      "Kitchen, bath & full-home remodels",
+      "Interior & exterior renovations",
+      "Custom metalwork & finishing details",
     ],
   },
   {
-    id: "services-welding",
-    icon: "hardware",
-    title: "Professional Welding",
+    id: "services-ironwork",
+    title: "Ironwork & Welding",
     desc:
-      "High-quality welding services for residential and commercial projects. Strong, clean welds built to last.",
+      "Custom gates, fences, railings, and structural welding. Every piece fabricated in-house with industrial-grade steel and a clean finish.",
     features: [
-      "MIG, TIG & Arc welding",
-      "Metal fabrication & repairs",
-      "On-site welding solutions",
+      "Driveway gates & security doors",
+      "Ornamental fences & railings",
+      "MIG, TIG & structural welding",
     ],
   },
 ];
 
-export default function Services() {
-  const ORANGE = "#FF8C00";
-  const BLACK = "#000000";
-  const GRAY_DARK = "#1a1a1a";
+const O = "#FF8C00";
 
+export default function Services() {
   return (
     <section
       id="servicios"
-      className="relative overflow-hidden bg-white px-6 py-24"
+      style={{ backgroundColor: "#fff", overflow: "hidden", position: "relative" }}
     >
-      {/* Background accents */}
-      <div className="absolute top-0 right-0 h-96 w-96 bg-[radial-gradient(circle,rgba(255,140,0,0.03),transparent_70%)]" />
-      <div className="absolute bottom-0 left-0 h-96 w-96 bg-[radial-gradient(circle,rgba(255,140,0,0.03),transparent_70%)]" />
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&display=swap');
 
-      {/* Subtle steel texture */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.02]"
-        style={{
-          backgroundImage:
-            "repeating-linear-gradient(90deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 1px, transparent 1px, transparent 12px)",
-        }}
-      />
+        .svc-section {
+          padding: clamp(64px, 8vw, 96px) clamp(20px, 5vw, 48px);
+        }
 
-      <div className="relative z-10 mx-auto max-w-7xl">
+        .svc-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 1px;
+          background: rgba(0,0,0,0.07);
+          border: 1px solid rgba(0,0,0,0.07);
+          margin-top: 56px;
+        }
+
+        .svc-card {
+          background: #fff;
+          padding: clamp(32px, 4vw, 52px) clamp(24px, 3vw, 40px);
+          position: relative;
+          overflow: hidden;
+          transition: background 0.2s ease;
+        }
+        .svc-card:hover { background: #fafafa; }
+
+        .svc-top-bar {
+          position: absolute;
+          top: 0; left: 0;
+          height: 3px;
+          width: 0;
+          background: ${O};
+          transition: width 0.5s ease;
+        }
+        .svc-card:hover .svc-top-bar { width: 100%; }
+
+        .svc-label {
+          font-family: 'Barlow Condensed', sans-serif;
+          font-size: 10px;
+          font-weight: 700;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          color: rgba(255,140,0,0.6);
+          margin-bottom: 12px;
+          display: block;
+        }
+
+        .svc-title {
+          font-family: 'Barlow Condensed', sans-serif;
+          font-size: clamp(22px, 2.2vw, 28px);
+          font-weight: 900;
+          color: #111;
+          letter-spacing: -0.02em;
+          line-height: 1.05;
+          text-transform: uppercase;
+          margin: 0 0 16px;
+          transition: color 0.2s;
+        }
+        .svc-card:hover .svc-title { color: ${O}; }
+
+        .svc-divider {
+          width: 28px;
+          height: 1px;
+          background: linear-gradient(90deg, ${O}, transparent);
+          margin-bottom: 16px;
+        }
+
+        .svc-desc {
+          font-size: 13.5px;
+          color: rgba(0,0,0,0.5);
+          line-height: 1.8;
+          margin: 0 0 24px;
+        }
+
+        .svc-feature {
+          display: flex;
+          align-items: flex-start;
+          gap: 10px;
+          font-size: 12.5px;
+          color: rgba(0,0,0,0.65);
+          font-weight: 500;
+          margin-bottom: 10px;
+        }
+        .svc-feature-dot {
+          width: 5px;
+          height: 5px;
+          border-radius: 50%;
+          background: ${O};
+          flex-shrink: 0;
+          margin-top: 5px;
+        }
+
+        .svc-cta {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: ${O};
+          text-decoration: none;
+          margin-top: 28px;
+          transition: gap 0.25s ease;
+          border: none;
+          background: none;
+          cursor: pointer;
+          padding: 0;
+        }
+        .svc-cta:hover { gap: 12px; }
+
+        @media (max-width: 900px) {
+          .svc-grid { grid-template-columns: 1fr; }
+        }
+        @media (min-width: 600px) and (max-width: 900px) {
+          .svc-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+      `}</style>
+
+      <div className="svc-section" style={{ maxWidth: 1200, margin: "0 auto" }}>
+
         {/* Header */}
-        <div className="text-center">
-          <h2 className="text-4xl font-bold tracking-tight text-black sm:text-5xl lg:text-6xl">
-            Our <span className="text-orange-500">Services</span>
+        <div style={{ maxWidth: 560 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
+            <div style={{ width: 20, height: 2, backgroundColor: O, flexShrink: 0 }} />
+            <span style={{
+              fontFamily: "'Barlow Condensed', sans-serif",
+              fontSize: 10,
+              fontWeight: 700,
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              color: O,
+            }}>
+              What We Do
+            </span>
+          </div>
+
+          <h2 style={{
+            margin: 0,
+            fontFamily: "'Barlow Condensed', sans-serif",
+            fontSize: "clamp(34px, 4vw, 52px)",
+            fontWeight: 900,
+            color: "#111",
+            letterSpacing: "-0.02em",
+            lineHeight: 1,
+            textTransform: "uppercase",
+          }}>
+            Our <span style={{ color: O }}>Services</span>
           </h2>
 
-          <p className="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-black/70">
-            Commercial and residential construction services combined with
-            professional welding solutions you can trust.
+          <p style={{
+            marginTop: 16,
+            fontSize: 13.5,
+            color: "rgba(0,0,0,0.45)",
+            lineHeight: 1.85,
+            maxWidth: 480,
+          }}>
+            From new builds and full renovations to custom gates and structural welding —
+            one contractor for every phase of your project.
           </p>
-
-          {/* Divider */}
-          <div className="mx-auto mt-8 flex items-center justify-center gap-3">
-            <div className="h-[2px] w-20 bg-gradient-to-r from-transparent to-orange-500" />
-            <div className="h-2 w-2 rotate-45 bg-orange-500" />
-            <div className="h-[2px] w-20 bg-gradient-to-l from-transparent to-orange-500" />
-          </div>
         </div>
 
-        {/* Services Grid */}
-        <div className="mx-auto mt-16 grid max-w-7xl gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {services.map((s, idx) => (
-            <div
-              key={s.id}
-              id={s.id}
-              className="group relative overflow-hidden bg-white transition-all duration-300 hover:-translate-y-3"
-              style={{ boxShadow: "0 5px 30px rgba(0,0,0,0.08)" }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.boxShadow =
-                  "0 20px 50px rgba(255,140,0,0.15)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow =
-                  "0 5px 30px rgba(0,0,0,0.08)";
-              }}
-            >
-              {/* Top accent */}
-              <div
-                className="absolute top-0 left-0 h-1 w-0 transition-all duration-500 group-hover:w-full"
-                style={{ backgroundColor: ORANGE }}
-              />
+        {/* Cards grid */}
+        <div className="svc-grid">
+          {services.map((s, i) => (
+            <div key={s.id} id={s.id} className="svc-card">
+              <div className="svc-top-bar" />
 
-              <div className="relative p-8">
-                {/* Icon + number */}
-                <div className="mb-6 flex items-start justify-between">
-                  <div
-                    className="relative grid h-20 w-20 place-items-center transition-all duration-300 group-hover:scale-110"
-                    style={{
-                      border: "2px solid rgba(0,0,0,0.08)",
-                      backgroundColor: "rgba(255,140,0,0.05)",
-                    }}
-                  >
-                    <span
-                      className="material-icons text-4xl transition-colors duration-300"
-                      style={{ color: GRAY_DARK }}
-                    >
-                      {s.icon}
-                    </span>
+              <span className="svc-label">
+                {String(i + 1).padStart(2, "0")} — {s.title.split(" ")[0]}
+              </span>
 
-                    <div className="absolute top-0 left-0 h-3 w-3 border-l-2 border-t-2 border-orange-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                    <div className="absolute bottom-0 right-0 h-3 w-3 border-r-2 border-b-2 border-orange-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+              <h3 className="svc-title">{s.title}</h3>
+              <div className="svc-divider" />
+              <p className="svc-desc">{s.desc}</p>
+
+              <div>
+                {s.features.map((f) => (
+                  <div key={f} className="svc-feature">
+                    <span className="svc-feature-dot" />
+                    <span>{f}</span>
                   </div>
-
-                  <div
-                    className="grid h-12 w-12 place-items-center font-bold text-white transition-all duration-300 group-hover:rotate-12 group-hover:scale-110"
-                    style={{ backgroundColor: ORANGE }}
-                  >
-                    <span className="text-lg">
-                      {String(idx + 1).padStart(2, "0")}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Title */}
-                <h3 className="text-2xl font-bold text-black transition-colors duration-300 group-hover:text-orange-500">
-                  {s.title}
-                </h3>
-
-                {/* Description */}
-                <p className="mt-4 leading-relaxed text-black/70">
-                  {s.desc}
-                </p>
-
-                {/* Features */}
-                <ul className="mt-6 space-y-3">
-                  {s.features.map((f, fIdx) => (
-                    <li
-                      key={f}
-                      className="flex items-start gap-3 text-sm font-medium text-black/80"
-                      style={{ transitionDelay: `${fIdx * 50}ms` }}
-                    >
-                      <span
-                        className="mt-1 flex h-5 w-5 items-center justify-center rounded-full"
-                        style={{
-                          backgroundColor: "rgba(255,140,0,0.1)",
-                          border: "1.5px solid rgba(255,140,0,0.3)",
-                        }}
-                      >
-                        <span className="text-xs font-bold text-orange-500">
-                          ✓
-                        </span>
-                      </span>
-                      <span>{f}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                {/* CTA */}
-                <button
-                  type="button"
-                  className="mt-8 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-orange-500 transition-all duration-300 hover:gap-4"
-                >
-                  <span>Learn More</span>
-                  <svg
-                    className="h-4 w-4"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    viewBox="0 0 24 24"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
-                </button>
+                ))}
               </div>
 
-              {/* Shine effect */}
-              <div className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
             </div>
           ))}
         </div>

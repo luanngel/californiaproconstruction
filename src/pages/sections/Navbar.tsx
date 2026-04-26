@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import logo from "../../assets/californiaproconstruccion.png";
+import { scrollToId } from "../../utils/scrollToId";
 
 /* ─────────────────────────────────────────────
    Types
@@ -16,6 +18,36 @@ type NavItem = { label: string; id: string; subItems?: SubItem[] };
 /* ─────────────────────────────────────────────
    Service icons (inline SVG)
 ───────────────────────────────────────────── */
+const IconConstruction = () => (
+  <svg viewBox="0 0 32 32" fill="none" width={26} height={26}>
+    <rect x="4" y="16" width="24" height="12" rx="1" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
+    <path d="M8 16V10a2 2 0 012-2h12a2 2 0 012 2v6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+    <rect x="13" y="20" width="6" height="8" rx="1" fill="currentColor" opacity=".4" />
+    <path d="M4 16h24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" opacity=".5" />
+    <path d="M10 8V6M16 8V5M22 8V6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" opacity=".5" />
+  </svg>
+);
+
+const IconRemodel = () => (
+  <svg viewBox="0 0 32 32" fill="none" width={26} height={26}>
+    <path d="M4 26L16 6l12 20H4z" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
+    <path d="M12 26v-6h8v6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" opacity=".6" />
+    <path d="M4 26h24" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+    <circle cx="16" cy="13" r="2" fill="currentColor" opacity=".4" />
+  </svg>
+);
+
+const IconCommercial = () => (
+  <svg viewBox="0 0 32 32" fill="none" width={26} height={26}>
+    <rect x="3" y="8" width="26" height="20" rx="1" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
+    <path d="M3 14h26" stroke="currentColor" strokeWidth="2" strokeLinecap="round" opacity=".55" />
+    <rect x="1" y="4" width="30" height="4" rx="1" fill="currentColor" opacity=".25" />
+    <rect x="7" y="18" width="4" height="4" rx="0.5" fill="currentColor" opacity=".5" />
+    <rect x="21" y="18" width="4" height="4" rx="0.5" fill="currentColor" opacity=".5" />
+    <rect x="14" y="21" width="4" height="7" rx="0.5" fill="currentColor" opacity=".45" />
+  </svg>
+);
+
 const IconGate = () => (
   <svg viewBox="0 0 32 32" fill="none" width={26} height={26}>
     <rect x="2" y="4" width="4" height="24" rx="1" fill="currentColor" />
@@ -24,13 +56,6 @@ const IconGate = () => (
     <rect x="6" y="13.5" width="20" height="2.5" rx="1" fill="currentColor" opacity=".7" />
     <rect x="6" y="19"   width="20" height="2.5" rx="1" fill="currentColor" opacity=".7" />
     <rect x="14.5" y="4" width="3"  height="24"  rx="1" fill="currentColor" opacity=".5" />
-  </svg>
-);
-
-const IconStairs = () => (
-  <svg viewBox="0 0 32 32" fill="none" width={26} height={26}>
-    <path d="M4 28h6v-6h6v-6h6v-6h6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-    <path d="M4 28v-6h6v-6h6v-6h6v-6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" opacity=".35" />
   </svg>
 );
 
@@ -44,33 +69,15 @@ const IconWeld = () => (
   </svg>
 );
 
-const IconRepair = () => (
-  <svg viewBox="0 0 32 32" fill="none" width={26} height={26}>
-    <path d="M20 4a8 8 0 00-7.94 9.06L4 21.12V28h6.88l8.06-8.06A8 8 0 1020 4z" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
-    <circle cx="22" cy="10" r="2" fill="currentColor" />
-    <line x1="7" y1="25" x2="11" y2="21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" opacity=".6" />
-  </svg>
-);
-
-const IconFab = () => (
-  <svg viewBox="0 0 32 32" fill="none" width={26} height={26}>
-    <rect x="4"  y="4"  width="10" height="10" rx="1.5" stroke="currentColor" strokeWidth="2.2" />
-    <rect x="18" y="4"  width="10" height="10" rx="1.5" stroke="currentColor" strokeWidth="2.2" />
-    <rect x="4"  y="18" width="10" height="10" rx="1.5" stroke="currentColor" strokeWidth="2.2" />
-    <circle cx="23" cy="23" r="5" fill="currentColor" opacity=".15" stroke="currentColor" strokeWidth="2.2" />
-    <path d="M21 23h4M23 21v4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-  </svg>
-);
-
 /* ─────────────────────────────────────────────
    Data
 ───────────────────────────────────────────── */
 const serviceItems: SubItem[] = [
-  { label: "Custom Gates & Metal Doors",       id: "services-gates",   desc: "Driveway, pedestrian & security gates built to spec.",     icon: <IconGate />   },
-  { label: "Metal Staircases",                 id: "services-stairs",  desc: "Interior & exterior steel staircases with custom railing.", icon: <IconStairs /> },
-  { label: "Welding Services",                 id: "services-welding", desc: "MIG, TIG & stick welding for any structural need.",         icon: <IconWeld />   },
-  { label: "Metal Repairs & Reinforcement",    id: "services-repairs", desc: "Restore, reinforce or modify existing metalwork.",          icon: <IconRepair /> },
-  { label: "Custom Fabrication",               id: "services-custom",  desc: "One-off parts, frames & structures from raw steel.",        icon: <IconFab />    },
+  { label: "General Construction",    id: "services-construction", desc: "New builds, additions & structural work from the ground up.", icon: <IconConstruction /> },
+  { label: "Remodeling & Renovation", id: "services-residential",  desc: "Full home & commercial remodels built on time and budget.",  icon: <IconRemodel />      },
+  { label: "Commercial Build-Outs",   id: "services-commercial",   desc: "Office, retail & industrial spaces built to spec.",          icon: <IconCommercial />   },
+  { label: "Gates & Ironwork",        id: "services-ironwork",     desc: "Custom gates, fences, railings & ornamental metalwork.",    icon: <IconGate />         },
+  { label: "Welding & Fabrication",   id: "services-welding",      desc: "MIG, TIG & structural welding for any project.",            icon: <IconWeld />         },
 ];
 
 const navItems: NavItem[] = [
@@ -88,11 +95,6 @@ const ORANGE_DARK = "#CC7000";
 const WHITE       = "#ffffff";
 const BG          = "rgba(8,8,8,0.99)";
 
-function scrollToId(id: string, offset = 90) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - offset, behavior: "smooth" });
-}
 
 /* ═══════════════════════════════════════════
    MEGA MENU (desktop)
@@ -158,16 +160,17 @@ function MegaMenu({
             }}
           >
             <p style={{ margin: 0, fontSize: 10, fontWeight: 800, letterSpacing: "0.2em", color: ORANGE, textTransform: "uppercase" }}>
-              What We Build
+              What We Do
             </p>
             <h2 style={{ margin: "10px 0 0", fontSize: 26, fontWeight: 900, color: WHITE, lineHeight: 1.15, letterSpacing: "-0.02em" }}>
-              Steel Crafted<br />
-              <span style={{ color: ORANGE }}>to Last.</span>
+              Built from<br />
+              <span style={{ color: ORANGE }}>the Ground Up.</span>
             </h2>
             <p style={{ margin: "12px 0 0", fontSize: 12.5, color: "rgba(255,255,255,0.4)", lineHeight: 1.65 }}>
-              Every piece fabricated in-house with industrial-grade materials and precision welding.
+              Full construction services and expert metalwork — one contractor for every phase of your project.
             </p>
 
+            {/* FIX 1: Eliminado `padding: 0` duplicado — solo se usa `paddingTop: 28` */}
             <button
               type="button"
               onClick={() => onNavigate("servicios")}
@@ -185,8 +188,6 @@ function MegaMenu({
                 background: "none",
                 border: "none",
                 cursor: "pointer",
-                padding: 0,
-                paddingTop: 28,
               } as React.CSSProperties}
               onMouseEnter={(e) => (e.currentTarget.style.color = WHITE)}
               onMouseLeave={(e) => (e.currentTarget.style.color = ORANGE)}
@@ -266,8 +267,7 @@ function MegaMenu({
         </div>
       </div>
 
-      {/* click-outside dimmer */}
-      <div style={{ position: "absolute", inset: 0, top: "100%", zIndex: -1 }} />
+      {/* FIX 3: Eliminado el <div> con zIndex: -1 que nunca capturaba clicks */}
     </div>
   );
 }
@@ -290,9 +290,15 @@ function MobileServicesAccordion({
   const bodyRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState(0);
 
+  // FIX 5: Usar ResizeObserver para recalcular height dinámicamente al resize
   useEffect(() => {
     if (!bodyRef.current) return;
-    setHeight(open ? bodyRef.current.scrollHeight : 0);
+    const el = bodyRef.current;
+    const update = () => setHeight(open ? el.scrollHeight : 0);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
   }, [open]);
 
   return (
@@ -394,50 +400,6 @@ function MobileServicesAccordion({
   );
 }
 
-/* ═══════════════════════════════════════════
-   CTA BUTTON
-═══════════════════════════════════════════ */
-function CtaButton({ onClick, fullWidth }: { onClick: () => void; fullWidth?: boolean }) {
-  const [hov, setHov] = useState(false);
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
-      style={{
-        position: "relative",
-        overflow: "hidden",
-        border: `2px solid ${hov ? ORANGE_DARK : ORANGE}`,
-        borderRadius: 3,
-        padding: "10px 24px",
-        backgroundColor: hov ? ORANGE_DARK : ORANGE,
-        color: "#000",
-        fontSize: 12,
-        fontWeight: 900,
-        letterSpacing: "0.1em",
-        textTransform: "uppercase",
-        cursor: "pointer",
-        transform: hov ? "translateY(-2px)" : "none",
-        boxShadow: hov ? `0 8px 20px rgba(255,140,0,0.35)` : "none",
-        transition: "all 0.2s ease",
-        width: fullWidth ? "100%" : "auto",
-      }}
-    >
-      <span
-        aria-hidden
-        style={{
-          position: "absolute", inset: 0,
-          background: "linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.2) 50%, transparent 65%)",
-          transform: hov ? "translateX(100%)" : "translateX(-100%)",
-          transition: "transform 0.4s ease",
-          pointerEvents: "none",
-        }}
-      />
-      Free Quote
-    </button>
-  );
-}
 
 /* ═══════════════════════════════════════════
    NAVBAR
@@ -446,7 +408,8 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [megaOpen,   setMegaOpen]   = useState(false);
-  const megaTimer = useRef<ReturnType<typeof setTimeout>>();
+  const navigate  = useNavigate();
+  const megaTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   const headerH  = isScrolled ? 66 : 86;
   const navOffset = useMemo(() => (isScrolled ? 68 : 90), [isScrolled]);
@@ -471,13 +434,24 @@ export default function Navbar() {
     return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
 
+  // FIX 4: Cleanup del timer al desmontar el componente
+  useEffect(() => {
+    return () => clearTimeout(megaTimer.current);
+  }, []);
+
   const openMega  = useCallback(() => { clearTimeout(megaTimer.current); setMegaOpen(true);  }, []);
   const closeMega = useCallback(() => { megaTimer.current = setTimeout(() => setMegaOpen(false), 140); }, []);
 
   const navigateTo = (id: string) => {
     setMegaOpen(false);
     setMobileOpen(false);
-    scrollToId(id, navOffset);
+    if (id.startsWith("services-")) {
+      navigate(`/services/${id}`);
+    } else if (window.location.pathname !== "/") {
+      window.location.href = `/#${id}`;
+    } else {
+      scrollToId(id, navOffset);
+    }
   };
 
   return (
@@ -528,8 +502,9 @@ export default function Navbar() {
                     key={n.id}
                     type="button"
                     onClick={() => navigateTo(n.id)}
+                    // FIX 2: Cerrar mega inmediatamente al hover otros items (sin delay)
                     onMouseEnter={(e) => {
-                      closeMega(); // close mega if hovering other items
+                      setMegaOpen(false);
                       e.currentTarget.style.color = ORANGE;
                     }}
                     onMouseLeave={(e) => (e.currentTarget.style.color = WHITE)}
@@ -572,7 +547,6 @@ export default function Navbar() {
               );
             })}
 
-            <CtaButton onClick={() => navigateTo("contacto")} />
           </nav>
 
           {/* Hamburger */}
@@ -701,9 +675,6 @@ export default function Navbar() {
             );
           })}
 
-          <div style={{ marginTop: 28 }}>
-            <CtaButton onClick={() => navigateTo("contacto")} fullWidth />
-          </div>
         </div>
       </div>
     </>

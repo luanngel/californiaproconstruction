@@ -1,373 +1,231 @@
 import { useEffect, useRef, useState } from "react";
+import construccionImg from "../../assets/construccion.jpg";
 
 const O = "#FF8C00";
-const BG = "#ffffff";
-const TEXT = "#0f0f0f";
-
-function useInView() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [vis, setVis] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    const obs = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
-          setVis(true);
-          obs.disconnect();
-        }
-      },
-      { threshold: 0.08 }
-    );
-
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-
-  return { ref, vis };
-}
-
-const services = [
-  "Residential Projects",
-  "Commercial Work",
-  "Custom Fabrication",
-  "Professional Welding",
-];
+const TEXT = "#111";
 
 const pillars = [
   {
     num: "01",
     title: "Precision First",
-    desc: "Every cut, weld, and finish is measured twice. We don't rush — we get it right.",
+    desc: "Every measurement, cut, and finish is checked twice. We don't rush — we get it right.",
   },
   {
     num: "02",
     title: "Built to Last",
-    desc: "We use materials and methods that hold up under real conditions, not just on paper.",
+    desc: "Materials and methods that hold up under real conditions, not just on paper.",
   },
   {
     num: "03",
     title: "Local Expertise",
-    desc: "Deep roots in San Diego mean we understand the projects, codes, and clients here.",
+    desc: "Deep roots in San Diego mean we know the codes, the clients, and the terrain.",
   },
 ];
+
+
+function useInView() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [vis, setVis] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setVis(true); obs.disconnect(); } },
+      { threshold: 0.06 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  return { ref, vis };
+}
 
 export default function AboutUs() {
   const { ref, vis } = useInView();
 
   return (
     <section
-      id="about-us"
+      id="quienes-somos"
       style={{
-        backgroundColor: BG,
+        backgroundColor: "#fff",
         overflow: "hidden",
-        position: "relative",
-        fontFamily: "'DM Sans', sans-serif",
+        paddingTop: "clamp(56px, 7vw, 88px)",
+        paddingBottom: "clamp(56px, 7vw, 88px)",
       }}
     >
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Barlow+Condensed:wght@700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&display=swap');
 
-        .about-service-tag {
-          font-size: 10px;
-          font-weight: 700;
-          font-family: 'Barlow Condensed', sans-serif;
-          letter-spacing: 0.14em;
-          text-transform: uppercase;
-          color: rgba(0,0,0,0.4);
-          border: 1px solid rgba(0,0,0,0.15);
-          padding: 7px 14px;
-          transition: color 0.2s, border-color 0.2s, background 0.2s;
-          cursor: default;
-        }
-        .about-service-tag:hover {
-          color: #fff;
-          background: #FF8C00;
-          border-color: #FF8C00;
-        }
-
-        .about-pillar {
-          transition: background 0.2s;
-        }
-        .about-pillar:hover {
-          background: rgba(255,140,0,0.06);
-        }
-
-        @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(22px); }
+        @keyframes abFadeUp {
+          from { opacity: 0; transform: translateY(18px); }
           to   { opacity: 1; transform: none; }
         }
-        .anim-1 { animation: fadeUp 0.55s ease both; animation-delay: 0s; }
-        .anim-2 { animation: fadeUp 0.55s ease both; animation-delay: 0.1s; }
-        .anim-3 { animation: fadeUp 0.55s ease both; animation-delay: 0.2s; }
-        .anim-4 { animation: fadeUp 0.55s ease both; animation-delay: 0.3s; }
-        .anim-hidden { opacity: 0; }
+        .ab-1 { animation: abFadeUp 0.65s ease both 0s; }
+        .ab-2 { animation: abFadeUp 0.65s ease both 0.1s; }
+        .ab-3 { animation: abFadeUp 0.65s ease both 0.22s; }
+        .ab-hidden { opacity: 0; }
+
+        .about-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          max-width: 1200px;
+          margin: 0 auto;
+        }
+
+        .about-photo {
+          position: relative;
+          min-height: 520px;
+        }
+
+        .about-content {
+          padding: clamp(48px, 6vw, 80px) clamp(32px, 5vw, 68px);
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          border-left: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .ab-pillar {
+          display: grid;
+          grid-template-columns: 36px 1fr;
+          gap: 0 12px;
+          padding: 15px 4px;
+          border-bottom: 1px solid rgba(0,0,0,0.06);
+          transition: background 0.18s;
+        }
+        .ab-pillar:last-child { border-bottom: none; }
+        .ab-pillar:hover { background: rgba(255,140,0,0.025); }
+
+        @media (max-width: 768px) {
+          .about-grid { grid-template-columns: 1fr; }
+          .about-photo { min-height: 300px; }
+          .about-content {
+            padding: 40px 24px;
+            border-left: none;
+            border-top: 1px solid rgba(0,0,0,0.05);
+          }
+        }
       `}</style>
 
+      <div ref={ref} className="about-grid">
 
-
-      {/* ── HEADER ── */}
-      <div
-        style={{
-          padding: "80px 60px 0",
-          maxWidth: 1160,
-          margin: "0 auto",
-          position: "relative",
-        }}
-      >
-        <div
-          ref={ref}
-          className={vis ? "anim-1" : "anim-hidden"}
-          style={{
-            display: "flex",
-            alignItems: "flex-end",
-            justifyContent: "space-between",
-            flexWrap: "wrap",
-            gap: 24,
-          }}
-        >
-          {/* Left: label + title */}
-          <div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-                marginBottom: 12,
-              }}
-            >
-              <div style={{ width: 28, height: 2, backgroundColor: O }} />
-              <span
-                style={{
-                  fontFamily: "'Barlow Condensed', sans-serif",
-                  fontSize: 11,
-                  fontWeight: 700,
-                  letterSpacing: "0.22em",
-                  color: O,
-                  textTransform: "uppercase",
-                }}
-              >
-                About Us
-              </span>
-            </div>
-
-            <h2
-              style={{
-                margin: 0,
-                fontFamily: "'Barlow Condensed', sans-serif",
-                fontSize: "clamp(44px, 5.5vw, 72px)",
-                fontWeight: 900,
-                color: TEXT,
-                letterSpacing: "-0.02em",
-                lineHeight: 0.95,
-                textTransform: "uppercase",
-              }}
-            >
-              Built on{" "}
-              <span style={{ color: O }}>Experience</span>
-            </h2>
-          </div>
-
-          {/* Right: tagline */}
-          <p
+        {/* PHOTO */}
+        <div className={`about-photo ${vis ? "ab-1" : "ab-hidden"}`}>
+          <img
+            src={construccionImg}
+            alt="California Pro construction"
             style={{
-              margin: 0,
-              fontSize: 13,
-              color: "rgba(0,0,0,0.4)",
-              lineHeight: 1.8,
-              maxWidth: 300,
-              borderLeft: `2px solid rgba(255,140,0,0.4)`,
-              paddingLeft: 16,
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              display: "block",
             }}
-          >
-            Serving San Diego with precision metal work and professional welding.
-          </p>
+          />
+          <div style={{
+            position: "absolute",
+            inset: 0,
+            background: "linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.08) 55%, transparent 100%)",
+          }} />
+
         </div>
 
-        {/* Full-width divider */}
-        <div
-          style={{
-            marginTop: 40,
-            height: 1,
-            background:
-              "linear-gradient(90deg, rgba(255,140,0,0.7), rgba(255,140,0,0.15) 60%, transparent)",
-          }}
-        />
-      </div>
+        {/* CONTENT */}
+        <div className={`about-content ${vis ? "ab-2" : "ab-hidden"}`}>
 
-      {/* ── MAIN CONTENT ── */}
-      <div
-        style={{
-          maxWidth: 1160,
-          margin: "56px auto 0",
-          padding: "0 60px 80px",
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: 60,
-          alignItems: "start",
-          position: "relative",
-        }}
-      >
-        {/* LEFT COLUMN */}
-        <div className={vis ? "anim-2" : "anim-hidden"}>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-              marginBottom: 18,
-            }}
-          >
-            <div style={{ width: 3, height: 20, backgroundColor: O }} />
-            <span
-              style={{
-                fontFamily: "'Barlow Condensed', sans-serif",
-                fontSize: 11,
-                fontWeight: 700,
-                color: O,
-                letterSpacing: "0.18em",
-                textTransform: "uppercase",
-              }}
-            >
-              Welding & Metal Works
+          {/* Eyebrow */}
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
+            <div style={{ width: 20, height: 2, backgroundColor: O, flexShrink: 0 }} />
+            <span style={{
+              fontFamily: "'Barlow Condensed', sans-serif",
+              fontSize: 10,
+              fontWeight: 700,
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              color: O,
+            }}>
+              About Us
             </span>
           </div>
 
-          <h3
-            style={{
-              margin: "0 0 20px",
-              fontFamily: "'Barlow Condensed', sans-serif",
-              fontSize: "clamp(30px, 2.8vw, 42px)",
-              fontWeight: 900,
-              color: TEXT,
-              letterSpacing: "-0.01em",
-              lineHeight: 1.05,
-              textTransform: "uppercase",
-            }}
-          >
-            Professional Craftsmanship
-            <br />
-            <span style={{ color: "rgba(0,0,0,0.28)" }}>in San Diego</span>
-          </h3>
+          {/* Heading */}
+          <h2 style={{
+            margin: 0,
+            fontFamily: "'Barlow Condensed', sans-serif",
+            fontSize: "clamp(34px, 4vw, 50px)",
+            fontWeight: 900,
+            color: TEXT,
+            letterSpacing: "-0.02em",
+            lineHeight: 1,
+            textTransform: "uppercase",
+          }}>
+            Built on<br />
+            <span style={{ color: O }}>Experience</span>
+          </h2>
 
-          <div
-            style={{
-              marginBottom: 24,
-              height: 1,
-              width: 48,
-              background: `linear-gradient(90deg, ${O}, transparent)`,
-            }}
-          />
+          {/* Divider */}
+          <div style={{
+            margin: "22px 0",
+            width: 36,
+            height: 1,
+            background: `linear-gradient(90deg, ${O}, transparent)`,
+          }} />
 
-          <p
-            style={{
-              margin: 0,
-              fontSize: 14.5,
-              color: "rgba(0,0,0,0.5)",
-              lineHeight: 1.95,
-              maxWidth: 440,
-            }}
-          >
-            We specialize in custom metalwork and professional welding services
-            across San Diego, backed by more than 20 years of industry experience.
-            Our work spans residential projects, commercial construction, and
-            precision fabrication, delivering durable and reliable results on every job.
+          {/* Description */}
+          <p style={{
+            margin: 0,
+            fontSize: 13.5,
+            color: "rgba(0,0,0,0.48)",
+            lineHeight: 1.85,
+            maxWidth: 400,
+          }}>
+            We specialize in residential and commercial construction across San Diego,
+            backed by more than 20 years of hands-on experience. New builds, full
+            renovations, commercial build-outs, and custom ironwork — delivered with
+            precision and built to last.
           </p>
 
+          {/* Pillars */}
           <div
-            className={vis ? "anim-3" : "anim-hidden"}
-            style={{ marginTop: 32, display: "flex", flexWrap: "wrap", gap: 8 }}
+            className={vis ? "ab-3" : "ab-hidden"}
+            style={{ marginTop: 32 }}
           >
-            {services.map((s) => (
-              <span key={s} className="about-service-tag">
-                {s}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* RIGHT COLUMN — PILLARS */}
-        <div
-          className={vis ? "anim-4" : "anim-hidden"}
-          style={{ display: "flex", flexDirection: "column" }}
-        >
-          {pillars.map((p, i) => (
-            <div
-              key={p.num}
-              className="about-pillar"
-              style={{
-                display: "grid",
-                gridTemplateColumns: "48px 1fr",
-                gap: "0 20px",
-                padding: "28px 12px",
-                borderBottom:
-                  i < pillars.length - 1
-                    ? "1px solid rgba(0,0,0,0.08)"
-                    : "none",
-                alignItems: "start",
-              }}
-            >
-              <div style={{ paddingTop: 2 }}>
-                <span
-                  style={{
-                    fontFamily: "'Barlow Condensed', sans-serif",
-                    fontSize: 11,
-                    fontWeight: 700,
-                    letterSpacing: "0.12em",
-                    color: O,
-                    display: "block",
-                    marginBottom: 6,
-                  }}
-                >
+            {pillars.map((p) => (
+              <div key={p.num} className="ab-pillar">
+                <span style={{
+                  fontFamily: "'Barlow Condensed', sans-serif",
+                  fontSize: 10,
+                  fontWeight: 700,
+                  letterSpacing: "0.1em",
+                  color: "rgba(255,140,0,0.5)",
+                  paddingTop: 1,
+                }}>
                   {p.num}
                 </span>
-                <div
-                  style={{
-                    width: 1,
-                    height: 32,
-                    background: `linear-gradient(to bottom, ${O}, transparent)`,
-                    marginLeft: 4,
-                  }}
-                />
-              </div>
-
-              <div>
-                <h4
-                  style={{
-                    margin: "0 0 8px",
+                <div>
+                  <h4 style={{
+                    margin: "0 0 3px",
                     fontFamily: "'Barlow Condensed', sans-serif",
-                    fontSize: 20,
+                    fontSize: 14,
                     fontWeight: 900,
-                    color: TEXT,
-                    letterSpacing: "-0.01em",
                     textTransform: "uppercase",
-                  }}
-                >
-                  {p.title}
-                </h4>
-                <p
-                  style={{
+                    letterSpacing: "-0.01em",
+                    color: TEXT,
+                  }}>
+                    {p.title}
+                  </h4>
+                  <p style={{
                     margin: 0,
-                    fontSize: 13,
-                    color: "rgba(0,0,0,0.45)",
-                    lineHeight: 1.85,
-                  }}
-                >
-                  {p.desc}
-                </p>
+                    fontSize: 12,
+                    color: "rgba(0,0,0,0.4)",
+                    lineHeight: 1.72,
+                  }}>
+                    {p.desc}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
-
-          <div
-            style={{
-              marginTop: 20,
-              height: 2,
-              background: `linear-gradient(90deg, ${O}, rgba(255,140,0,0.1), transparent)`,
-            }}
-          />
+            ))}
+          </div>
         </div>
       </div>
     </section>

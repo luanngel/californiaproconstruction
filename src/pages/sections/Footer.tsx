@@ -1,5 +1,3 @@
-"use client";
-
 export default function Footer() {
   const ORANGE = "#FF8C00";
   const currentYear = new Date().getFullYear();
@@ -81,12 +79,12 @@ export default function Footer() {
 
             <p className="max-w-md text-sm leading-relaxed text-white/70">
               Professional construction and welding services delivering safe, reliable, and high-quality industrial
-              solutions across California since 2005.
+              solutions across California.
             </p>
 
             {/* Certifications badges */}
             <div className="mt-6 flex flex-wrap gap-3">
-              {["AWS Certified", "Licensed", "Insured"].map((badge) => (
+              {["Licensed Contractor", "Fully Insured"].map((badge) => (
                 <div
                   key={badge}
                   className="inline-flex items-center gap-2 rounded-sm border border-orange-500/20 bg-orange-500/10 px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-orange-500"
@@ -104,27 +102,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div>
-            <h4 className="mb-4 text-sm font-bold uppercase tracking-wider text-white">Quick Links</h4>
-            <ul className="space-y-3">
-              {quickLinks.map((link) => (
-                <li key={link.id}>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const el = document.getElementById(link.id);
-                      if (el) el.scrollIntoView({ behavior: "smooth" });
-                    }}
-                    className="group inline-flex items-center gap-2 text-sm text-white/60 transition-all duration-300 hover:translate-x-1 hover:text-orange-500"
-                  >
-                    <span className="h-1 w-1 rounded-full bg-orange-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                    {link.label}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
 
           {/* Contact Info */}
           <div>
@@ -148,7 +125,8 @@ export default function Footer() {
                       d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
                     />
                   </svg>
-                  <span className="group-hover:underline">(123) 456-7890</span>
+                  <span className="group-hover:underline">(619) 745-8718</span>
+                  <span className="group-hover:underline"> | (619) 902-8005</span>
                 </a>
               </li>
 
@@ -170,7 +148,7 @@ export default function Footer() {
                       d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                     />
                   </svg>
-                  <span className="group-hover:underline">info@californiapro.com</span>
+                  <span className="group-hover:underline">californiaproconstruction@gmail.com</span>
                 </a>
               </li>
 
@@ -199,14 +177,7 @@ export default function Footer() {
               </li>
             </ul>
 
-            {/* 24/7 Badge */}
-            <div className="mt-6 inline-flex items-center gap-2 rounded-sm bg-orange-500 px-4 py-2 text-xs font-bold uppercase tracking-wider text-white">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-white" />
-              </span>
-              24/7 Emergency Service
-            </div>
+    
           </div>
         </div>
 
@@ -224,35 +195,10 @@ export default function Footer() {
             <p className="mt-1 text-xs text-white/40">Built with precision, dedication, and excellence.</p>
           </div>
 
-          {/* Social Links */}
-          <div className="flex items-center gap-4">
-            {socials.map((social) => (
-              <a
-                key={social.name}
-                href={social.href}
-                aria-label={social.name}
-                className="group flex h-10 w-10 items-center justify-center rounded-sm border border-white/10 bg-white/5 text-white/60 transition-all duration-300 hover:-translate-y-1 hover:scale-110 hover:border-orange-500 hover:bg-orange-500 hover:text-white"
-              >
-                {social.icon}
-              </a>
-            ))}
-          </div>
+        
         </div>
 
-        {/* Extra Info */}
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-xs text-white/40">
-          <button type="button" className="transition-colors duration-300 hover:text-orange-500 hover:underline">
-            Privacy Policy
-          </button>
-          <span>•</span>
-          <button type="button" className="transition-colors duration-300 hover:text-orange-500 hover:underline">
-            Terms of Service
-          </button>
-          <span>•</span>
-          <button type="button" className="transition-colors duration-300 hover:text-orange-500 hover:underline">
-            Sitemap
-          </button>
-        </div>
+      
       </div>
 
       {/* Decorative bottom accent */}

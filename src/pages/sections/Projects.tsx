@@ -1,159 +1,306 @@
 import { useEffect, useState } from "react";
 
-import projectImg001 from "../../assets/001.jpg";
-import projectImg002 from "../../assets/002.jpg";
-import projectImg003 from "../../assets/003.jpg";
-import projectImg004 from "../../assets/004.jpg";
-import projectImg005 from "../../assets/005.jpg";
-import projectImg006 from "../../assets/006.jpg";
+import projectImg001 from "../../assets/construccion.jpg";
+import projectImg002 from "../../assets/arlberca.jpg";
+import projectImg003 from "../../assets/construccion2.jpg";
+import projectImg004 from "../../assets/porton.jpg";
+import projectImg005 from "../../assets/rejas.jpg";
+import projectImg006 from "../../assets/escaleras.jpg";
+
+const O = "#FF8C00";
 
 type Project = {
   id: string;
   category: string;
   title: string;
   desc: string;
-  icon: string;
   specs?: { k: string; v: string }[];
-  image?: string;
+  image: string;
 };
 
 const projects: Project[] = [
   {
     id: "p1",
-    category: "Sliding Driveway Gate",
-    title: "Modern Horizontal Steel Sliding Gate",
-    desc: "Custom steel sliding driveway gate with horizontal slats, built for privacy, smooth operation, and a clean modern look.",
-    icon: "🏗️",
+    category: "New Construction",
+    title: "Residential Construction Project",
+    desc: "Full residential build — foundation, framing, and structural work completed to code and on schedule.",
     image: projectImg001,
     specs: [
-      { k: "Style", v: "Horizontal slat design" },
-      { k: "Material", v: "Steel construction" },
-      { k: "Finish", v: "Matte black coating" },
+      { k: "Type",   v: "New residential build" },
+      { k: "Scope",  v: "Full structural work" },
+      { k: "Status", v: "Completed on schedule" },
     ],
   },
   {
     id: "p2",
-    category: "Security Door",
-    title: "Decorative Wrought Iron Security Door",
-    desc: "Heavy-duty security door with decorative scrollwork and a reinforced frame, designed to improve safety without sacrificing curb appeal.",
-    icon: "🛡️",
+    category: "Outdoor Construction",
+    title: "Custom Pool & Outdoor Build",
+    desc: "Complete outdoor construction including pool, hardscape, and surrounding structural work.",
     image: projectImg002,
     specs: [
-      { k: "Design", v: "Ornamental scrollwork" },
-      { k: "Build", v: "Reinforced steel frame" },
-      { k: "Finish", v: "Black protective coating" },
+      { k: "Type",     v: "Outdoor & pool build" },
+      { k: "Includes", v: "Hardscape & structure" },
+      { k: "Finish",   v: "Full turnkey delivery" },
     ],
   },
   {
     id: "p3",
-    category: "Driveway Gate + Walk Gate",
-    title: "Horizontal Privacy Gate with Side Entry Door",
-    desc: "Custom horizontal-slat driveway gate with a matching pedestrian access door for daily entry and secure vehicle access.",
-    icon: "🚪",
+    category: "Commercial Build",
+    title: "Commercial Construction Project",
+    desc: "Commercial build-out with structural framing, concrete work, and full coordination of all trades.",
     image: projectImg003,
     specs: [
-      { k: "System", v: "Drive gate + walk gate" },
-      { k: "Style", v: "Modern horizontal slats" },
-      { k: "Finish", v: "Durable outdoor coating" },
+      { k: "Type",   v: "Commercial build-out" },
+      { k: "Scope",  v: "Structural + finishing" },
+      { k: "Permit", v: "Fully permitted" },
     ],
   },
   {
     id: "p4",
-    category: "Ornamental Iron Fence",
-    title: "Custom Iron Fence with Decorative Details",
-    desc: "Ornamental iron fencing featuring spear-top pickets and scroll accents, fabricated for strength, security, and classic style.",
-    icon: "🧱",
+    category: "Custom Gate",
+    title: "Heavy-Duty Entry Gate Installation",
+    desc: "Custom fabricated entry gate built from structural steel — designed for security, durability, and curb appeal.",
     image: projectImg004,
     specs: [
-      { k: "Top", v: "Spear picket finials" },
-      { k: "Detail", v: "Decorative scroll band" },
-      { k: "Mount", v: "Post base plate anchored" },
+      { k: "Material", v: "Structural steel" },
+      { k: "Type",     v: "Swing entry gate" },
+      { k: "Finish",   v: "Protective coating" },
     ],
   },
   {
     id: "p5",
-    category: "Interior Railings",
-    title: "Modern Stair Railing Installation",
-    desc: "Clean, modern interior stair railing with horizontal bars—installed for safety, code-friendly function, and a sleek finish.",
-    icon: "🏠",
+    category: "Iron Fencing",
+    title: "Custom Ornamental Iron Fence",
+    desc: "Ornamental iron fence with vertical pickets fabricated and installed for security and a clean street presence.",
     image: projectImg005,
     specs: [
-      { k: "Application", v: "Stairs + landing guardrail" },
-      { k: "Style", v: "Modern horizontal bars" },
-      { k: "Finish", v: "Black powder-style coating" },
+      { k: "Style",    v: "Vertical picket design" },
+      { k: "Material", v: "Iron construction" },
+      { k: "Finish",   v: "Black outdoor coating" },
     ],
   },
   {
     id: "p6",
-    category: "Custom Entry Gate",
-    title: "Arched Decorative Front Entry Gate",
-    desc: "Custom arched entry gate with circular accents and vertical pickets—built to enhance the home’s entrance with security and style.",
-    icon: "✨",
+    category: "Metal Stairs",
+    title: "Metal Staircase & Railing",
+    desc: "Custom steel staircase with matching railing — fabricated to spec and installed safely to California building codes.",
     image: projectImg006,
     specs: [
-      { k: "Shape", v: "Arched top design" },
-      { k: "Detail", v: "Circular ornamental accents" },
-      { k: "Finish", v: "Outdoor-grade white coating" },
+      { k: "Type",   v: "Steel staircase" },
+      { k: "Railing", v: "Custom metal rail" },
+      { k: "Code",   v: "CBC compliant" },
     ],
   },
 ];
 
-function scrollToId(id: string, offset = 90) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  const top = el.getBoundingClientRect().top + window.scrollY - offset;
-  window.scrollTo({ top, behavior: "smooth" });
+/* ─── desktop grid layout positions ─────────────────────────────────── */
+const desktopLayout: { col: string; row: string }[] = [
+  { col: "1 / 3", row: "1 / 3" }, // P1 — featured 2×2
+  { col: "3",     row: "1"      }, // P2
+  { col: "3",     row: "2"      }, // P3
+  { col: "1",     row: "3"      }, // P4
+  { col: "2",     row: "3"      }, // P5
+  { col: "3",     row: "3"      }, // P6
+];
+
+/* ─── photo card ─────────────────────────────────────────────────────── */
+function PhotoCard({
+  p,
+  featured,
+  onOpen,
+}: {
+  p: Project;
+  featured?: boolean;
+  onOpen: (id: string) => void;
+}) {
+  const [hov, setHov] = useState(false);
+
+  return (
+    <button
+      type="button"
+      className="group relative block h-full w-full overflow-hidden"
+      onClick={() => onOpen(p.id)}
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      aria-label={`View ${p.title}`}
+    >
+      {/* photo */}
+      <img
+        src={p.image}
+        alt={p.title}
+        className="h-full w-full object-cover"
+        style={{
+          transform: hov ? "scale(1.07)" : "scale(1.02)",
+          transition: "transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94)",
+        }}
+      />
+
+      {/* permanent bottom gradient — category + title always visible */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.28) 40%, transparent 70%)",
+          transition: "opacity 0.35s ease",
+          opacity: hov ? 0 : 1,
+        }}
+      />
+
+      {/* always-visible label */}
+      <div
+        className="absolute bottom-0 left-0 right-0 p-5"
+        style={{
+          opacity: hov ? 0 : 1,
+          transform: hov ? "translateY(6px)" : "none",
+          transition: "all 0.3s ease",
+        }}
+      >
+        <span
+          className="mb-2 inline-block px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-[0.2em] text-white"
+          style={{ backgroundColor: O }}
+        >
+          {p.category}
+        </span>
+        <h3
+          className="mt-2 font-bold leading-snug text-white"
+          style={{ fontSize: featured ? 20 : 15 }}
+        >
+          {p.title}
+        </h3>
+      </div>
+
+      {/* hover overlay — full detail */}
+      <div
+        className="absolute inset-0 flex flex-col justify-end"
+        style={{
+          background:
+            "linear-gradient(to top, rgba(6,6,6,0.97) 0%, rgba(6,6,6,0.72) 45%, rgba(0,0,0,0.18) 100%)",
+          opacity: hov ? 1 : 0,
+          transition: "opacity 0.35s ease",
+        }}
+      >
+        <div
+          className="p-5 lg:p-6"
+          style={{
+            transform: hov ? "none" : "translateY(14px)",
+            transition: "transform 0.35s ease",
+          }}
+        >
+          <span
+            className="inline-block px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-[0.2em] text-white"
+            style={{ backgroundColor: O }}
+          >
+            {p.category}
+          </span>
+
+          <h3
+            className="mt-3 font-bold leading-snug text-white"
+            style={{ fontSize: featured ? 22 : 16 }}
+          >
+            {p.title}
+          </h3>
+
+          <p
+            className="mt-2 leading-relaxed text-white/60"
+            style={{ fontSize: featured ? 13 : 11.5 }}
+          >
+            {p.desc}
+          </p>
+
+          {p.specs && (
+            <div
+              className="mt-4 grid grid-cols-3 gap-x-2 gap-y-1 border-t pt-4"
+              style={{ borderColor: "rgba(255,255,255,0.1)" }}
+            >
+              {p.specs.map((s) => (
+                <div key={s.k}>
+                  <p style={{ fontSize: 9, fontWeight: 800, color: O, textTransform: "uppercase", letterSpacing: "0.1em" }}>
+                    {s.k}
+                  </p>
+                  <p style={{ fontSize: 10.5, color: "rgba(255,255,255,0.65)", marginTop: 2 }}>
+                    {s.v}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div
+            className="mt-4 flex items-center gap-1.5"
+            style={{ fontSize: 10, fontWeight: 800, color: O, letterSpacing: "0.12em", textTransform: "uppercase" }}
+          >
+            <span>View full photo</span>
+            <svg width="11" height="11" viewBox="0 0 14 14" fill="none">
+              <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      {/* orange top bar on hover */}
+      <div
+        className="absolute left-0 right-0 top-0 h-[3px] origin-left transition-transform duration-500"
+        style={{
+          backgroundColor: O,
+          transform: hov ? "scaleX(1)" : "scaleX(0)",
+        }}
+      />
+    </button>
+  );
 }
 
+/* ══════════════════════════════════════════════════════════════════════
+   SECTION
+══════════════════════════════════════════════════════════════════════ */
 export default function Projects() {
-  const [selectedProject, setSelectedProject] = useState<string | null>(null);
-
-  // ✅ Lightbox state
   const [openProjectId, setOpenProjectId] = useState<string | null>(null);
   const openProject = openProjectId
     ? projects.find((p) => p.id === openProjectId) ?? null
     : null;
 
-  const ORANGE = "#FF8C00";
-
-  // ✅ ESC closes modal
   useEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpenProjectId(null);
-    };
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpenProjectId(null); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // ✅ Lock scroll when modal open
   useEffect(() => {
     document.body.style.overflow = openProjectId ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
+    return () => { document.body.style.overflow = ""; };
   }, [openProjectId]);
 
   return (
     <>
       <section id="proyectos" className="relative overflow-hidden bg-black px-6 py-24">
-        {/* Grid background */}
+        {/* bg grid */}
         <div className="absolute inset-0 opacity-[0.15] [background-image:repeating-linear-gradient(0deg,transparent,transparent_80px,rgba(255,140,0,0.1)_80px,rgba(255,140,0,0.1)_81px),repeating-linear-gradient(90deg,transparent,transparent_80px,rgba(255,140,0,0.1)_80px,rgba(255,140,0,0.1)_81px)]" />
-
-        {/* Radial glow */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[radial-gradient(ellipse_at_center,rgba(255,140,0,0.08),transparent_70%)]" />
 
         <div className="relative mx-auto max-w-7xl">
-          {/* Header */}
+
+          {/* ── header ── */}
           <div className="text-center">
-            <h2 className="mt-6 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
-              Featured <span className="text-orange-500">Projects</span>
+            <h2 style={{
+              margin: "24px 0 0",
+              fontFamily: "'Barlow Condensed', sans-serif",
+              fontSize: "clamp(34px, 4vw, 52px)",
+              fontWeight: 900,
+              color: "#fff",
+              letterSpacing: "-0.02em",
+              lineHeight: 1,
+              textTransform: "uppercase",
+            }}>
+              Featured <span style={{ color: "#FF8C00" }}>Projects</span>
             </h2>
-
-            <p className="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-white/70">
-              Every project reflects our commitment to excellence, safety, and quality craftsmanship.
+            <p style={{
+              margin: "20px auto 0",
+              maxWidth: 600,
+              fontSize: 15,
+              color: "rgba(255,255,255,0.55)",
+              lineHeight: 1.8,
+            }}>
+              A sample of our custom ironwork and construction projects — every piece built in-house and installed by our team.
             </p>
-
-            {/* Divider */}
             <div className="mx-auto mt-8 flex items-center justify-center gap-3">
               <div className="h-[2px] w-20 bg-gradient-to-r from-transparent to-orange-500" />
               <div className="h-2 w-2 rotate-45 bg-orange-500" />
@@ -161,198 +308,86 @@ export default function Projects() {
             </div>
           </div>
 
-          {/* Projects Grid - Compact */}
-          <div className="relative mx-auto mt-16 grid max-w-7xl gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {projects.map((p, idx) => (
+          {/* ── desktop asymmetric grid (lg+) ── */}
+          <div
+            className="mt-16 hidden lg:grid"
+            style={{
+              gridTemplateColumns: "repeat(3, 1fr)",
+              gridTemplateRows: "repeat(3, 300px)",
+              gap: 8,
+            }}
+          >
+            {projects.map((p, i) => (
               <div
                 key={p.id}
-                className="group relative overflow-hidden bg-gradient-to-br from-zinc-900 to-zinc-950 transition-all duration-500 hover:-translate-y-2"
-                style={{ boxShadow: "0 4px 30px rgba(0,0,0,0.5)" }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.boxShadow = "0 20px 60px rgba(255,140,0,0.2)";
-                  setSelectedProject(p.id);
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.boxShadow = "0 4px 30px rgba(0,0,0,0.5)";
-                  setSelectedProject(null);
+                style={{
+                  gridColumn: desktopLayout[i].col,
+                  gridRow:    desktopLayout[i].row,
                 }}
               >
-                {/* Top orange bar */}
-                <div
-                  className="absolute top-0 left-0 h-1 w-0 transition-all duration-500 group-hover:w-full"
-                  style={{ backgroundColor: ORANGE }}
+                <PhotoCard
+                  p={p}
+                  featured={i === 0}
+                  onOpen={setOpenProjectId}
                 />
-
-                {/* Image / Icon background */}
-                <button
-                  type="button"
-                  onClick={() => p.image && setOpenProjectId(p.id)}
-                  className="relative h-40 w-full overflow-hidden bg-gradient-to-br from-zinc-800 to-zinc-900 text-left"
-                  aria-label={p.image ? `Open ${p.title} image` : `Project ${p.title}`}
-                >
-                  {p.image ? (
-                    <>
-                      <img
-                        src={p.image}
-                        alt={p.title}
-                        className="h-full w-full object-cover opacity-80 transition-transform duration-500 group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
-                    </>
-                  ) : (
-                    <div className="absolute inset-0 grid place-items-center text-7xl opacity-20 transition-all duration-500 group-hover:scale-125 group-hover:opacity-30">
-                      {p.icon}
-                    </div>
-                  )}
-
-                  {/* Corner accents */}
-                  <div className="absolute top-0 right-0 h-16 w-16 border-r-2 border-t-2 border-orange-500/30 transition-all duration-500 group-hover:border-orange-500" />
-                  <div className="absolute bottom-0 left-0 h-16 w-16 border-l-2 border-b-2 border-orange-500/30 transition-all duration-500 group-hover:border-orange-500" />
-
-                  {/* Project number */}
-                  <div
-                    className="absolute top-4 left-4 grid h-10 w-10 place-items-center font-bold text-white transition-all duration-300 group-hover:rotate-12 group-hover:scale-110"
-                    style={{ backgroundColor: ORANGE }}
-                  >
-                    {String(idx + 1).padStart(2, "0")}
-                  </div>
-                </button>
-
-                {/* Content */}
-                <div className="p-6">
-                  {/* Category badge */}
-                  <span
-                    className="inline-block px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.15em] text-white"
-                    style={{ backgroundColor: ORANGE }}
-                  >
-                    {p.category}
-                  </span>
-
-                  {/* Title */}
-                  <h3 className="mt-4 text-xl font-bold text-white transition-colors duration-300 group-hover:text-orange-500">
-                    {p.title}
-                  </h3>
-
-                  {/* Description */}
-                  <p className="mt-3 text-sm leading-relaxed text-white/60">{p.desc}</p>
-
-                  {/* Specs */}
-                  {p.specs?.length ? (
-                    <div className="mt-5 space-y-2 border-t border-white/10 pt-4">
-                      {p.specs.map((s) => (
-                        <div key={s.k} className="flex items-center justify-between text-xs">
-                          <span className="font-bold text-orange-500">{s.k}</span>
-                          <span className="text-white/70">{s.v}</span>
-                        </div>
-                      ))}
-                    </div>
-                  ) : null}
-
-                  {/* View details link */}
-                  <button
-                    type="button"
-                    onClick={() => p.image && setOpenProjectId(p.id)}
-                    className="mt-6 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-orange-500 transition-all duration-300 hover:gap-3"
-                  >
-                    <span>View Details</span>
-                    <svg
-                      className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-1"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      viewBox="0 0 24 24"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M5 12h14M12 5l7 7-7 7" />
-                    </svg>
-                  </button>
-                </div>
-
-                {/* Shine effect */}
-                <div className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/5 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
               </div>
             ))}
           </div>
 
-          {/* Stats section */}
-          <div className="mt-20 grid gap-8 md:grid-cols-3">
-            {[
-              { num: "100%", label: "Licensed & Insured" },
-              { num: "20+", label: "Years of Experience" },
-              { num: "5★", label: "Client Reviews" },
-            ].map((stat, idx) => (
-              <div key={stat.label} className="group text-center" style={{ transitionDelay: `${idx * 100}ms` }}>
-                <div className="text-5xl font-bold text-orange-500 transition-all duration-300 group-hover:scale-110">
-                  {stat.num}
-                </div>
-                <div className="mt-2 text-sm uppercase tracking-wider text-white/60">{stat.label}</div>
+          {/* ── mobile / tablet grid (< lg) ── */}
+          <div className="mt-10 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:hidden">
+            {projects.map((p) => (
+              <div key={p.id} style={{ height: 280 }}>
+                <PhotoCard p={p} onOpen={setOpenProjectId} />
               </div>
             ))}
           </div>
 
-          {/* CTA */}
-          <div className="relative mx-auto mt-20 max-w-2xl text-center">
-            <p className="text-lg font-medium text-white/80 mb-6">Ready to discuss your project?</p>
-            <button
-              type="button"
-              onClick={() => scrollToId("contacto", 90)}
-              className="group inline-flex items-center gap-3 rounded-sm border-2 border-orange-500 bg-orange-500 px-10 py-5 text-sm font-extrabold uppercase tracking-[0.15em] text-white shadow-lg shadow-orange-500/20 transition-all duration-300 hover:bg-orange-600 hover:border-orange-600 hover:-translate-y-1 hover:shadow-2xl hover:shadow-orange-500/40"
-            >
-              <span>Contact Us Now</span>
-              <svg
-                className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                viewBox="0 0 24 24"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div>
+
         </div>
       </section>
 
-      {/* ✅ Lightbox Modal */}
-      {openProject?.image && (
-        <div className="fixed inset-0 z-[9999]">
-          {/* Backdrop */}
+      {/* ── lightbox ── */}
+      {openProject && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center">
+          {/* backdrop */}
           <button
             type="button"
-            aria-label="Close image"
-            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+            aria-label="Close"
+            className="absolute inset-0 bg-black/90 backdrop-blur-sm"
             onClick={() => setOpenProjectId(null)}
           />
 
-          {/* Content */}
-          <div className="relative mx-auto flex h-full max-w-6xl items-center justify-center px-4 py-8">
-            <div className="relative w-full">
-              {/* Close button */}
-              <button
-                type="button"
-                onClick={() => setOpenProjectId(null)}
-                className="absolute -top-2 right-0 z-10 grid h-10 w-10 place-items-center rounded-sm border border-white/20 bg-black/60 text-white transition hover:bg-black/80"
-                aria-label="Close"
+          <div className="relative mx-auto w-full max-w-5xl px-4">
+            {/* close */}
+            <button
+              type="button"
+              onClick={() => setOpenProjectId(null)}
+              className="absolute -top-12 right-4 z-10 flex h-10 w-10 items-center justify-center border border-white/20 bg-black/60 text-white transition hover:bg-white/10"
+              aria-label="Close lightbox"
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+            </button>
+
+            {/* image */}
+            <img
+              src={openProject.image}
+              alt={openProject.title}
+              className="mx-auto block max-h-[82vh] w-auto max-w-full object-contain"
+              style={{ boxShadow: "0 32px 80px rgba(0,0,0,0.8)" }}
+            />
+
+            {/* caption */}
+            <div className="mt-5 flex items-center justify-center gap-3 text-sm">
+              <span
+                className="px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-[0.2em] text-white"
+                style={{ backgroundColor: O }}
               >
-                ✕
-              </button>
-
-              {/* Image */}
-              <img
-                src={openProject.image}
-                alt={openProject.title}
-                className="mx-auto max-h-[85vh] w-auto max-w-full rounded-sm border border-white/10 object-contain shadow-[0_20px_80px_rgba(0,0,0,0.7)]"
-              />
-
-              {/* Caption (minimal, no design change) */}
-              <div className="mt-4 text-center text-sm text-white/70">
-                <span className="font-semibold text-white">{openProject.title}</span>
-                <span className="mx-2 text-white/30">•</span>
-                <span>{openProject.category}</span>
-              </div>
+                {openProject.category}
+              </span>
+              <span className="font-semibold text-white">{openProject.title}</span>
             </div>
           </div>
         </div>

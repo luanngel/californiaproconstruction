@@ -1,15 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import heroBg from "../../assets/logo22.jpg";
-
-function scrollToId(id: string, offset = 76) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - offset, behavior: "smooth" });
-}
+import { scrollToId } from "../../utils/scrollToId";
 
 function useMouseParallax() {
   const [pos, setPos] = useState({ x: 0, y: 0 });
-  const frame = useRef<number>();
+  const frame = useRef<number | undefined>(undefined);
 
   const onMove = useCallback((e: MouseEvent) => {
     if (frame.current) cancelAnimationFrame(frame.current);
@@ -47,20 +42,37 @@ export default function Hero() {
   return (
     <section
       id="inicio"
-      style={{
-        position: "relative",
-        marginTop: 76,
-        minHeight: "calc(100vh - 76px)", // ← cambio
-        display: "grid",
-        gridTemplateColumns: "minmax(0, 1.1fr) minmax(0, 0.9fr)", // ← cambio
-        overflow: "hidden",
-      }}
-      className="max-md:grid-cols-1"
+      className="hero-section"
     >
       <style>{`
         @keyframes line-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
         @keyframes fade-up   { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fade-in   { from { opacity: 0; } to { opacity: 1; } }
+
+        .hero-section {
+          position: relative;
+          margin-top: 76px;
+          min-height: calc(100vh - 76px);
+          display: grid;
+          grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+          overflow: hidden;
+        }
+
+        .hero-right {
+          position: relative;
+          overflow: hidden;
+        }
+
+        @media (max-width: 767px) {
+          .hero-section {
+            grid-template-columns: 1fr;
+            min-height: calc(100svh - 66px);
+            margin-top: 66px;
+          }
+          .hero-right {
+            display: none;
+          }
+        }
       `}</style>
 
       {/* LEFT */}
@@ -109,11 +121,13 @@ export default function Hero() {
 
           <h1 style={{
             margin: 0,
+            fontFamily: "'Barlow Condensed', sans-serif",
             fontSize: "clamp(36px, 4.5vw, 62px)",
             fontWeight: 900,
             color: "#fff",
             letterSpacing: "-0.04em",
             lineHeight: 1.0,
+            textTransform: "uppercase",
             animation: vis ? "fade-up 0.8s ease 0.2s both" : "none",
           }}>
             California
@@ -121,11 +135,13 @@ export default function Hero() {
 
           <h1 style={{
             margin: "6px 0 0",
+            fontFamily: "'Barlow Condensed', sans-serif",
             fontSize: "clamp(36px, 4.5vw, 62px)",
             fontWeight: 900,
             color: O,
             letterSpacing: "-0.04em",
             lineHeight: 1.0,
+            textTransform: "uppercase",
             textShadow: `0 0 60px rgba(255,140,0,0.35)`,
             animation: vis ? "fade-up 0.8s ease 0.3s both" : "none",
           }}>
@@ -134,11 +150,13 @@ export default function Hero() {
 
           <h1 style={{
             margin: "6px 0 0",
+            fontFamily: "'Barlow Condensed', sans-serif",
             fontSize: "clamp(22px, 2.8vw, 36px)",
             fontWeight: 700,
             color: "rgba(255,255,255,0.7)",
             letterSpacing: "-0.02em",
             lineHeight: 1.1,
+            textTransform: "uppercase",
             animation: vis ? "fade-up 0.8s ease 0.4s both" : "none",
           }}>
             Construction & Welding
@@ -174,7 +192,7 @@ export default function Hero() {
             rowGap: 10, // ← cambio
             animation: vis ? "fade-up 0.8s ease 0.7s both" : "none",
           }}>
-            <HeroBtn primary label="Free Quote" onClick={() => scrollToId("contacto", 76)} />
+            <HeroBtn primary label="Free Quote" onClick={() => window.open("https://wa.me/16197458718", "_blank")} />
             <HeroBtn label="Our Services" onClick={() => scrollToId("servicios", 76)} />
           </div>
 
@@ -185,7 +203,7 @@ export default function Hero() {
             flexWrap: "wrap",
             animation: vis ? "fade-in 0.8s ease 0.9s both" : "none",
           }}>
-            {["Custom Gates", "Metal Staircases", "Welding", "Fabrication"].map((t) => (
+            {["General Construction", "Remodeling", "Custom Ironwork", "Welding"].map((t) => (
               <span key={t} style={{
                 fontSize: 10, fontWeight: 700,
                 letterSpacing: "0.1em", textTransform: "uppercase",
@@ -202,7 +220,7 @@ export default function Hero() {
       </div>
 
       {/* RIGHT */}
-      <div style={{ position: "relative", overflow: "hidden" }}>
+      <div className="hero-right">
 
         <div style={{
           position: "absolute",
