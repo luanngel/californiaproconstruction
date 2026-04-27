@@ -15,6 +15,7 @@ type ContactCard = {
   detail: string;
   subdtail: string;
   link: string | null;
+  extraLink?: { label: string; href: string };
 };
 
 export default function Contact() {
@@ -43,9 +44,10 @@ export default function Contact() {
         </svg>
       ),
       title: "Call Us",
-      detail: "(619) 902-8005 | (619) 745-8718",
+      detail: "(619) 745-8718",
       subdtail: "Mon-Fri: 7AM - 6PM",
-      link: "tel:+1234567890",
+      link: "tel:+16197458718",
+      extraLink: { label: "(619) 902-8005", href: "tel:+16199028005" },
     },
     {
       icon: (
@@ -220,12 +222,22 @@ export default function Contact() {
                     <h3 className="text-sm font-bold uppercase tracking-wider text-white/60">{item.title}</h3>
 
                     {item.link ? (
-                      <a
-                        href={item.link}
-                        className="mt-1 block text-lg font-semibold text-white transition-colors duration-300 hover:text-orange-500"
-                      >
-                        {item.detail}
-                      </a>
+                      <div className="mt-1 flex flex-col gap-0.5">
+                        <a
+                          href={item.link}
+                          className="text-lg font-semibold text-white transition-colors duration-300 hover:text-orange-500"
+                        >
+                          {item.detail}
+                        </a>
+                        {item.extraLink && (
+                          <a
+                            href={item.extraLink.href}
+                            className="text-lg font-semibold text-white transition-colors duration-300 hover:text-orange-500"
+                          >
+                            {item.extraLink.label}
+                          </a>
+                        )}
+                      </div>
                     ) : (
                       <p className="mt-1 text-lg font-semibold text-white">{item.detail}</p>
                     )}
