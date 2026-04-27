@@ -136,29 +136,40 @@ export default function Contact() {
       className="relative overflow-hidden bg-gradient-to-br from-zinc-900 via-black to-zinc-950 px-6 py-24"
     >
       <style>{`
-        /* Prevent iOS Safari auto-zoom on input focus (requires font-size >= 16px) */
+        /* ── iOS Safari form fixes ── */
         #contacto input,
         #contacto select,
         #contacto textarea {
           font-size: 16px !important;
-          -webkit-text-fill-color: rgba(255,255,255,0.9);
-          color: white;
+          -webkit-appearance: none;
+          appearance: none;
+          background-color: #1e1e1e !important;
+          border: 2px solid rgba(255,255,255,0.18) !important;
+          color: white !important;
+          -webkit-text-fill-color: rgba(255,255,255,0.92) !important;
+          border-radius: 2px;
+        }
+        #contacto input:focus,
+        #contacto select:focus,
+        #contacto textarea:focus {
+          border-color: #FF8C00 !important;
+          background-color: #242424 !important;
+          outline: none !important;
         }
         #contacto input::placeholder,
         #contacto textarea::placeholder {
-          -webkit-text-fill-color: rgba(255,255,255,0.3);
-          color: rgba(255,255,255,0.3);
-        }
-        /* Fix select native appearance on iOS */
-        #contacto select {
-          -webkit-appearance: none;
-          background-color: rgba(255,255,255,0.08) !important;
-          color: white !important;
-          -webkit-text-fill-color: white !important;
+          -webkit-text-fill-color: rgba(255,255,255,0.32) !important;
+          color: rgba(255,255,255,0.32) !important;
         }
         #contacto select option {
-          background-color: #18181b;
+          background-color: #1e1e1e;
           color: white;
+        }
+        /* webkit-backdrop-filter for older iOS */
+        #contacto .form-card {
+          -webkit-backdrop-filter: blur(12px);
+          backdrop-filter: blur(12px);
+          background-color: rgba(20,20,20,0.85) !important;
         }
       `}</style>
       {/* Background decorative elements */}
@@ -254,7 +265,7 @@ export default function Contact() {
           {/* Right Column - Form */}
           <div className="relative">
             {/* Form Container */}
-            <div className="relative rounded-sm border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-8 backdrop-blur-sm">
+            <div className="form-card relative rounded-sm border border-white/20 p-8">
               {/* Top accent */}
               <div className="absolute left-0 top-0 h-1 w-full rounded-t-sm" style={{ backgroundColor: ORANGE }} />
 
@@ -283,7 +294,7 @@ export default function Contact() {
                         value={formData.fullName}
                         onChange={handleChange}
                         placeholder="John Doe"
-                        className="w-full rounded-sm border-2 border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-white/30 transition-all duration-300 focus:border-orange-500 focus:bg-white/10 focus:outline-none"
+                        className="w-full px-4 py-3 transition-colors duration-200"
                       />
                     </div>
 
@@ -296,7 +307,7 @@ export default function Contact() {
                         value={formData.company}
                         onChange={handleChange}
                         placeholder="Your Company"
-                        className="w-full rounded-sm border-2 border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-white/30 transition-all duration-300 focus:border-orange-500 focus:bg-white/10 focus:outline-none"
+                        className="w-full px-4 py-3 transition-colors duration-200"
                       />
                     </div>
                   </div>
@@ -314,7 +325,7 @@ export default function Contact() {
                         value={formData.email}
                         onChange={handleChange}
                         placeholder="john@example.com"
-                        className="w-full rounded-sm border-2 border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-white/30 transition-all duration-300 focus:border-orange-500 focus:bg-white/10 focus:outline-none"
+                        className="w-full px-4 py-3 transition-colors duration-200"
                       />
                     </div>
 
@@ -329,7 +340,7 @@ export default function Contact() {
                         value={formData.phone}
                         onChange={handleChange}
                         placeholder="(123) 456-7890"
-                        className="w-full rounded-sm border-2 border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-white/30 transition-all duration-300 focus:border-orange-500 focus:bg-white/10 focus:outline-none"
+                        className="w-full px-4 py-3 transition-colors duration-200"
                       />
                     </div>
                   </div>
@@ -344,7 +355,7 @@ export default function Contact() {
                       name="projectType"
                       value={formData.projectType}
                       onChange={handleChange}
-                      className="w-full rounded-sm border-2 border-white/10 bg-white/5 px-4 py-3 text-white transition-all duration-300 focus:border-orange-500 focus:bg-white/10 focus:outline-none"
+                      className="w-full px-4 py-3 transition-colors duration-200"
                     >
                       <option value="" className="bg-zinc-900">
                         Select a project type...
@@ -379,7 +390,7 @@ export default function Contact() {
                       onChange={handleChange}
                       placeholder="Tell us about your project... What do you need?"
                       rows={5}
-                      className="w-full resize-none rounded-sm border-2 border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-white/30 transition-all duration-300 focus:border-orange-500 focus:bg-white/10 focus:outline-none"
+                      className="w-full resize-none px-4 py-3 transition-colors duration-200"
                     />
                   </div>
 
